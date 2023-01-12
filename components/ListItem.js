@@ -1,4 +1,4 @@
-import {Image, StyleSheet, View, Text, TouchableOpacity} from 'react-native';
+import {Image, View, Text, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types';
 
 const ListItem = ({singleMedia}) => {
