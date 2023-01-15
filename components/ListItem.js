@@ -1,5 +1,6 @@
 import {Image, View, Text, TouchableOpacity} from 'react-native';
 import PropTypes from 'prop-types';
+import {uploadsUrl} from '../utils/variables';
 
 const ListItem = ({singleMedia}) => {
   const item = singleMedia;
@@ -8,7 +9,7 @@ const ListItem = ({singleMedia}) => {
       <View style={styles.box}>
         <Image
           style={styles.image}
-          // source={{uri: uploadsUrl + item.thumbnails?.w160}}
+          source={{uri: uploadsUrl + item.thumbnails?.w160}}
         />
       </View>
       <View style={styles.box}>
