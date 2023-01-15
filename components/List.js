@@ -1,4 +1,5 @@
 import {FlatList} from 'react-native';
+import ListItem from './ListItem';
 
 const mediaArray = [
   {
