@@ -7,7 +7,7 @@ const Profile = () => {
   const {setIsLoggedIn} = useContext(MainContext);
   return (
     <SafeAreaView style={styles.container}>
-      <Text>Profile</Text>
+      <Text style={styles.Profile}>Profile</Text>
       <Button
         title="Logout!"
         onPress={async () => {
@@ -27,10 +27,14 @@ const Profile = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'powderblue',
     alignItems: 'center',
     justifyContent: 'center',
     paddingTop: 40,
+  },
+  Profile: {
+    paddingBottom: 10,
+    fontSize: 25,
   },
 });
 

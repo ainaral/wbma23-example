@@ -17,20 +17,43 @@ const TabScreen = () => {
     <Tab.Navigator
       screenOptions={({route}) => {
         return {
+          tabBarStyle: {
+            backgroundColor: 'thistle',
+          },
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
             if (route.name === 'Home') {
-              iconName = 'home';
+              iconName = focused ? 'home' : 'home-outline';
             } else if (route.name === 'Profile') {
-              iconName = 'person';
+              iconName = focused ? 'person' : 'person-outline';
             }
-            return <Ionicons name={iconName} />;
+            return <Ionicons name={iconName} size={size} color={color} />;
           },
+          tabBarActiveTintColor: 'mediumpurple',
+          tabBarInactiveTintColor: 'black',
         };
       }}
     >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Profile" component={Profile} />
+      <Tab.Screen
+        name="Home"
+        component={Home}
+        options={{
+          headerStyle: {
+            backgroundColor: 'plum',
+          },
+          headerTintColor: 'black',
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
+        options={{
+          headerStyle: {
+            backgroundColor: 'plum',
+          },
+          headerTintColor: 'black',
+        }}
+      />
     </Tab.Navigator>
   );
 };
@@ -44,12 +67,32 @@ const StackScreen = () => {
           <Stack.Screen
             name="Tabs"
             component={TabScreen}
-            options={{headerShown: false}}
+            options={{
+              headerShown: false,
+            }}
           />
-          <Stack.Screen name="Single" component={Single} />
+          <Stack.Screen
+            name="Single"
+            component={Single}
+            options={{
+              headerStyle: {
+                backgroundColor: 'plum',
+              },
+              headerTintColor: 'black',
+            }}
+          />
         </>
       ) : (
-        <Stack.Screen name="Login" component={Login}></Stack.Screen>
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{
+            headerStyle: {
+              backgroundColor: 'plum',
+            },
+            headerTintColor: 'black',
+          }}
+        ></Stack.Screen>
       )}
     </Stack.Navigator>
   );

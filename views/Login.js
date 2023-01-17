@@ -34,7 +34,7 @@ const Login = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      <Text>Login</Text>
+      <Text style={styles.Login}>Login</Text>
       <Button title="Sign in!" onPress={logIn} />
     </View>
   );
@@ -43,9 +43,13 @@ const Login = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'powderblue',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  Login: {
+    paddingBottom: 10,
+    fontSize: 25,
   },
 });
 
