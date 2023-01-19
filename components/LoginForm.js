@@ -1,12 +1,11 @@
 import React, {useContext} from 'react';
-import PropTypes from 'prop-types';
 import {Button, Text, TextInput, View} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useAuthentication} from '../hooks/ApiHooks';
 import {Controller, useForm} from 'react-hook-form';
 
-const LoginForm = (props) => {
+const LoginForm = () => {
   const {setIsLoggedIn} = useContext(MainContext);
   const {postLogin} = useAuthentication();
   const {
@@ -19,11 +18,10 @@ const LoginForm = (props) => {
 
   const logIn = async (loginData) => {
     console.log('Login button pressed', loginData);
-    console.log('validation errors', errors);
-    const data = {
-      // username: 'ainaral',
-      // password: 'Lu-na-55',
-    };
+    // const data = {
+    //   username: 'ainaral',
+    //   password: 'Lu-na-55',
+    // };
     try {
       const loginResult = await postLogin(loginData);
       console.log('logIn', loginResult);
@@ -75,7 +73,5 @@ const LoginForm = (props) => {
     </View>
   );
 };
-
-LoginForm.propTypes = {};
 
 export default LoginForm;
