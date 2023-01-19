@@ -6,7 +6,7 @@ import {useAuthentication} from '../hooks/ApiHooks';
 import {Controller, useForm} from 'react-hook-form';
 
 const LoginForm = () => {
-  const {setIsLoggedIn} = useContext(MainContext);
+  const {setIsLoggedIn, setUser} = useContext(MainContext);
   const {postLogin} = useAuthentication();
   const {
     control,
@@ -26,6 +26,7 @@ const LoginForm = () => {
       const loginResult = await postLogin(loginData);
       console.log('logIn', loginResult);
       await AsyncStorage.setItem('userToken', loginResult.token);
+      setUser(loginResult.user);
       setIsLoggedIn(true);
     } catch (error) {
       console.error('logIn', error);
