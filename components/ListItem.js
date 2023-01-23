@@ -1,5 +1,4 @@
-import {Avatar} from '@rneui/base';
-import {ListItem as RNEListItem} from '@rneui/themed';
+import {Avatar, ListItem as RNEListItem} from '@rneui/themed';
 import PropTypes from 'prop-types';
 import {uploadsUrl} from '../utils/variables';
 

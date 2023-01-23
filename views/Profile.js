@@ -1,10 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useContext, useEffect, useState} from 'react';
-import {Button} from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {useTag} from '../hooks/ApiHooks';
 import {uploadsUrl} from '../utils/variables';
-import {Card, Icon, ListItem} from '@rneui/themed';
+import {Button, Card, Icon, ListItem} from '@rneui/themed';
 
 const Profile = () => {
   const {getFilesByTag} = useTag();
