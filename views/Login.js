@@ -5,14 +5,13 @@ import {
   Platform,
   TouchableOpacity,
 } from 'react-native';
-import PropTypes from 'prop-types';
 import {MainContext} from '../contexts/MainContext';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useUser} from '../hooks/ApiHooks';
+import {Button, Text} from '@rneui/base';
+import PropTypes from 'prop-types';
 import LoginForm from '../components/LoginForm';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import RegisterForm from '../components/RegisterForm';
-import {Button} from '@rneui/base';
-import {Text} from '@rneui/themed';
 
 const Login = ({navigation}) => {
   const {setIsLoggedIn, setUser} = useContext(MainContext);
@@ -44,7 +43,11 @@ const Login = ({navigation}) => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         {toggleForm ? <LoginForm /> : <RegisterForm />}
-        <Text>{toggleForm ? 'Go to register' : 'Go to login'} </Text>
+        <Text>
+          {toggleForm
+            ? 'No account yet? Please register.'
+            : 'Already have an account? Please login.'}{' '}
+        </Text>
         <Button
           title={toggleForm ? 'Register' : 'Login'}
           onPress={() => {

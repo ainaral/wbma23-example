@@ -6,19 +6,20 @@ import {Controller, useForm} from 'react-hook-form';
 const RegisterForm = (props) => {
   // const {setIsLoggedIn} = useContext(MainContext);
   // const {postLogin} = useAuthentication();
-  const {postUser} = useUser();
+  const {postUser, checkUsername} = useUser();
   const {
     control,
     handleSubmit,
     formState: {errors},
   } = useForm({
     defaultValues: {username: '', password: '', email: '', full_name: ''},
+    mode: 'onBlur',
   });
 
   const register = async (registerData) => {
     console.log('Registering', registerData);
-
     try {
+      if (!checkUser) return;
       const registerResult = await postUser(registerData);
       console.log('registration result', registerResult);
     } catch (error) {
@@ -27,18 +28,25 @@ const RegisterForm = (props) => {
     }
   };
 
+  const checkUser = async (username) => {
+    const userAvailable = await checkUsername(username);
+    console.log('checkUser', userAvailable);
+    return userAvailable || 'Username is already taken';
+  };
+
   return (
     <Card>
       <Card.Title>Registration form</Card.Title>
       <Controller
         control={control}
-        rules={{required: true, minLength: 3}}
+        rules={{required: true, minLength: 3, validate: checkUser}}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
             placeholder="Username"
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
+            autoCapitalize="none"
           />
         )}
         name="username"
@@ -72,6 +80,7 @@ const RegisterForm = (props) => {
             onBlur={onBlur}
             onChangeText={onChange}
             value={value}
+            autoCapitalize="none"
           />
         )}
         name="email"
@@ -88,13 +97,14 @@ const RegisterForm = (props) => {
             onChangeText={onChange}
             value={value}
             secureTextEntry={true}
+            autoCapitalize="words"
           />
         )}
         name="full_name"
       />
       {errors.full_name?.type === 'minLength' && <Text>min length is 3</Text>}
 
-      <Button title="Sign in!" onPress={handleSubmit(register)} />
+      <Button title="Register!" onPress={handleSubmit(register)} />
     </Card>
   );
 };
