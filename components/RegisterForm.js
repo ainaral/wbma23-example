@@ -29,9 +29,13 @@ const RegisterForm = (props) => {
   };
 
   const checkUser = async (username) => {
-    const userAvailable = await checkUsername(username);
-    console.log('checkUser', userAvailable);
-    return userAvailable || 'Username is already taken';
+    try {
+      const userAvailable = await checkUsername(username);
+      console.log('checkUser', userAvailable);
+      return userAvailable || 'Username is already taken';
+    } catch (error) {
+      console.error('checkUser', error.message);
+    }
   };
 
   return (
@@ -39,7 +43,14 @@ const RegisterForm = (props) => {
       <Card.Title>Registration form</Card.Title>
       <Controller
         control={control}
-        rules={{required: true, minLength: 3, validate: checkUser}}
+        rules={{
+          required: {value: true, message: 'This is required.'},
+          minLength: {
+            value: 3,
+            message: 'Username min length is 3 characters.',
+          },
+          validate: checkUser,
+        }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
             placeholder="Username"
@@ -47,18 +58,24 @@ const RegisterForm = (props) => {
             onChangeText={onChange}
             value={value}
             autoCapitalize="none"
+            errorMessage={errors.username && errors.username.message}
           />
         )}
         name="username"
       />
-      {/* TODO: Fix error messages for RNE components */}
-      {errors.username?.type === 'required' && <Text>is required</Text>}
-      {errors.username?.type === 'minLength' && (
-        <Text>min length is 3 characters</Text>
-      )}
+
       <Controller
         control={control}
-        rules={{required: true, minLength: 5}}
+        rules={{
+          required: {
+            value: true,
+            message: 'min 5 characters, needs one number, one uppercase letter',
+          },
+          pattern: {
+            value: /(?=.*\p{Lu})(?=.*[0-9]).{5,}/u,
+            message: 'min 5 characters, needs one number, one uppercase letter',
+          },
+        }}
         render={({field: {onChange, onBlur, value}}) => (
           <Input
             placeholder="Password"
@@ -66,11 +83,12 @@ const RegisterForm = (props) => {
             onChangeText={onChange}
             value={value}
             secureTextEntry={true}
+            errorMessage={errors.password && errors.password.message}
           />
         )}
         name="password"
       />
-      {errors.password && <Text>Password (min. 5 chars) is required .</Text>}
+
       <Controller
         control={control}
         rules={{required: true}}

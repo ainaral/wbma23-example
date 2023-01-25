@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import {MainContext} from '../contexts/MainContext';
 import {useUser} from '../hooks/ApiHooks';
-import {Button, Text} from '@rneui/base';
+import {Button, Card, Text} from '@rneui/base';
 import PropTypes from 'prop-types';
 import LoginForm from '../components/LoginForm';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -43,17 +43,20 @@ const Login = ({navigation}) => {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
         {toggleForm ? <LoginForm /> : <RegisterForm />}
-        <Text>
-          {toggleForm
-            ? 'No account yet? Please register.'
-            : 'Already have an account? Please login.'}{' '}
-        </Text>
-        <Button
-          title={toggleForm ? 'Register' : 'Login'}
-          onPress={() => {
-            setToggleForm(!toggleForm);
-          }}
-        />
+        <Card>
+          <Text>
+            {toggleForm
+              ? 'No account yet? Please register.'
+              : 'Already have an account? Please login.'}
+          </Text>
+          <Button
+            type="outline"
+            title={toggleForm ? 'Go to register' : 'Go to login'}
+            onPress={() => {
+              setToggleForm(!toggleForm);
+            }}
+          />
+        </Card>
       </KeyboardAvoidingView>
     </TouchableOpacity>
   );
