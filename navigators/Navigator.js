@@ -2,11 +2,13 @@ import React, {useContext} from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {MainContext} from '../contexts/MainContext';
+import {Icon} from '@rneui/base';
+import Home from '../views/Home';
+import Profile from '../views/Profile';
 import Single from '../views/Single';
 import Upload from '../views/Upload';
 import Login from '../views/Login';
-import {MainContext} from '../contexts/MainContext';
-import {Icon} from '@rneui/base';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -16,7 +18,7 @@ const TabScreen = () => {
     <Tab.Navigator>
       <Tab.Screen
         name="Home"
-        component={Upload}
+        component={Home}
         options={{
           tabBarIcon: ({color}) => <Icon name="home" color={color} />,
         }}
@@ -29,8 +31,8 @@ const TabScreen = () => {
         }}
       />
       <Tab.Screen
-        name="profile"
-        component={Upload}
+        name="Profile"
+        component={Profile}
         options={{
           tabBarIcon: ({color}) => <Icon name="person" color={color} />,
         }}
