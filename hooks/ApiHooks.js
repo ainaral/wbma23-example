@@ -76,6 +76,7 @@ const useUser = () => {
       throw new Error('checkUser: ' + error.message);
     }
   };
+
   const postUser = async (userData) => {
     const options = {
       method: 'post',
@@ -101,7 +102,20 @@ const useUser = () => {
     }
   };
 
-  return {getUserByToken, postUser, checkUsername};
+  const modifyUser = async (username, password, email) => {
+    try {
+      const modifyUserResult = await doFetch(
+        baseUrl + '/users' + username,
+        password,
+        email
+      );
+      return modifyUserResult;
+    } catch (error) {
+      throw new Error('modifyUser: ' + error.message);
+    }
+  };
+
+  return {getUserByToken, postUser, checkUsername, modifyUser};
 };
 
 const useTag = () => {
