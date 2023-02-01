@@ -9,22 +9,28 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import {useContext, useState} from 'react';
+import {useCallback, useContext, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useMedia} from '../hooks/ApiHooks';
+import {useMedia, useTag} from '../hooks/ApiHooks';
 import {MainContext} from '../contexts/MainContext';
+import {useFocusEffect} from '@react-navigation/native';
+import {appId} from '../utils/variables';
 
 const Upload = ({navigation}) => {
   const [mediafile, setMediaFile] = useState({});
   const [loading, setLoading] = useState(false);
   const {postMedia} = useMedia();
+  const {postTag} = useTag();
   const {update, setUpdate} = useContext(MainContext);
   const {
     control,
     handleSubmit,
     formState: {errors},
+    trigger,
+    setValue,
   } = useForm({
     defaultValues: {title: '', description: ''},
+    mode: 'onChange',
   });
 
   const uploadFile = async (data) => {
@@ -44,11 +50,15 @@ const Upload = ({navigation}) => {
     });
     console.log('form data', formData);
     try {
+      const token = await AsyncStorage.getItem('userToken');
       const result = await postMedia(
         formData,
         await AsyncStorage.getItem('userToken')
       );
-      console.log('upload result', result);
+      const appTag = {file_id: result.file_id, tag: appId};
+      const tagResult = await postTag(appTag, token);
+      console.log('tag result', tagResult);
+
       Alert.alert('Uploaded', 'File id: ' + result.file_id, [
         {
           text: 'OK',
@@ -57,6 +67,7 @@ const Upload = ({navigation}) => {
             // update 'update' state in context
             setUpdate(!update);
             // TODO: navigate to home
+            navigation.navigate('Home');
           },
         },
       ]);
@@ -69,20 +80,41 @@ const Upload = ({navigation}) => {
   };
 
   const pickFile = async () => {
-    // No permissions request is necessary for launching the image library
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0.5,
-    });
+    try {
+      // No permissions request is necessary for launching the image library
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 0.5,
+      });
 
-    console.log(result);
+      console.log(result);
 
-    if (!result.canceled) {
-      setMediaFile(result.assets[0]);
+      if (!result.canceled) {
+        setMediaFile(result.assets[0]);
+        // validate form
+        trigger();
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
+
+  const reset = () => {
+    setMediaFile({});
+    setValue('title', '');
+    // setValue('description', '');
+  };
+
+  useFocusEffect(
+    useCallback(() => {
+      return () => {
+        console.log('leaving');
+        reset();
+      };
+    }, [])
+  );
 
   return (
     <ScrollView>
@@ -93,7 +125,13 @@ const Upload = ({navigation}) => {
           />
           <Controller
             control={control}
-            rules={{required: {value: true, message: 'is required'}}}
+            rules={{
+              required: {value: true, message: 'is required'},
+              minLength: {
+                value: 3,
+                message: 'Title min length is 3 characters.',
+              },
+            }}
             render={({field: {onChange, onBlur, value}}) => (
               <Input
                 placeholder="Title"
@@ -107,22 +145,30 @@ const Upload = ({navigation}) => {
           />
           <Controller
             control={control}
+            rules={{
+              minLength: {
+                value: 5,
+                message: 'Description min length is 5 characters',
+              },
+            }}
             render={({field: {onChange, onBlur, value}}) => (
               <Input
                 placeholder="Description"
                 onBlur={onBlur}
                 onChangeText={onChange}
                 value={value}
+                errorMessage={errors.description && errors.description.message}
               />
             )}
             name="description"
           />
           <Button title="Pick a file" onPress={pickFile} />
           <Button
-            disabled={!mediafile.uri}
+            disabled={!mediafile.uri || errors.title || errors.description}
             title="Upload"
             onPress={handleSubmit(uploadFile)}
           />
+          <Button title={'Reset'} onPress={reset} type="outline" />
           {loading && <ActivityIndicator size="large" />}
         </Card>
       </TouchableOpacity>
