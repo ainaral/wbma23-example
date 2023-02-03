@@ -117,19 +117,21 @@ const Upload = ({navigation}) => {
     }, [])
   );
 
+  console.log('tupe', mediafile.type);
+
   return (
     <ScrollView>
       <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
         <Card>
-          {mediafile.type === 'image' ? (
+          {mediafile.type === 'video' ? (
+            <Card.Title>Video</Card.Title>
+          ) : (
             <Card.Image
               source={{
                 uri: mediafile.uri || 'https://placekitten.com/g/200/300',
               }}
               onPress={pickFile}
             />
-          ) : (
-            <Card.Text>Video</Card.Text>
           )}
           <Controller
             control={control}
