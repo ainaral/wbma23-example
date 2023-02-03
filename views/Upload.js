@@ -1,13 +1,7 @@
 import PropTypes from 'prop-types';
 import {Button, Card, Input} from '@rneui/themed';
 import {Controller, useForm} from 'react-hook-form';
-import {
-  ActivityIndicator,
-  Alert,
-  Keyboard,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native';
+import {Alert, Keyboard, ScrollView, TouchableOpacity} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import {useCallback, useContext, useState} from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -174,12 +168,12 @@ const Upload = ({navigation}) => {
           />
           <Button title="Pick a file" onPress={pickFile} />
           <Button
+            loading={loading}
             disabled={!mediafile.uri || errors.title || errors.description}
             title="Upload"
             onPress={handleSubmit(uploadFile)}
           />
           <Button title={'Reset'} onPress={resetForm} type="outline" />
-          {loading && <ActivityIndicator size="large" />}
         </Card>
       </TouchableOpacity>
     </ScrollView>
