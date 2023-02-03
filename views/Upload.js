@@ -121,9 +121,16 @@ const Upload = ({navigation}) => {
     <ScrollView>
       <TouchableOpacity onPress={() => Keyboard.dismiss()} activeOpacity={1}>
         <Card>
-          <Card.Image
-            source={{uri: mediafile.uri || 'https://placekitten.com/g/200/300'}}
-          />
+          {mediafile.type === 'image' ? (
+            <Card.Image
+              source={{
+                uri: mediafile.uri || 'https://placekitten.com/g/200/300',
+              }}
+              onPress={pickFile}
+            />
+          ) : (
+            <Card.Text>Video</Card.Text>
+          )}
           <Controller
             control={control}
             rules={{
