@@ -23,7 +23,7 @@ const useMedia = () => {
       // const response = await fetch(baseUrl + 'media');
       // const json = await response.json();
       const json = await useTag().getFilesByTag(appId);
-
+      json.reverse();
       const media = await Promise.all(
         json.map(async (file) => {
           const fileResponse = await fetch(baseUrl + 'media/' + file.file_id);
@@ -123,7 +123,17 @@ const useUser = () => {
     }
   };
 
-  return {getUserByToken, postUser, checkUsername};
+  const getUserById = async (id, token) => {
+    try {
+      return await doFetch(baseUrl + 'users/' + id, {
+        headers: {'x-access-token': token},
+      });
+    } catch (error) {
+      throw new Error('getUserById, ' + error.message);
+    }
+  };
+
+  return {getUserByToken, postUser, checkUsername, getUserById};
 };
 
 const useTag = () => {
