@@ -89,7 +89,7 @@ const useMedia = (myFilesOnly) => {
       body: JSON.stringify(data),
     };
     try {
-      return await doFetch(baseUrl + 'media' + id, options);
+      return await doFetch(baseUrl + 'media/' + id, options);
     } catch (error) {
       throw new Error('putMedia: ' + error.message);
     }
