@@ -9,6 +9,7 @@ import Profile from '../views/Profile';
 import Single from '../views/Single';
 import Upload from '../views/Upload';
 import Login from '../views/Login';
+import MyFiles from '../views/MyFiles';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -53,6 +54,7 @@ const StackScreen = () => {
             options={{headerShown: false}}
           />
           <Stack.Screen name="Single" component={Single} />
+          <Stack.Screen name="MyFiles" component={MyFiles} />
         </>
       ) : (
         <Stack.Screen name="Login" component={Login}></Stack.Screen>
